@@ -23,4 +23,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return UserDetailsImpl.build(user);
   }
 
+  public UserEntity saveSignupUser(UserDetailsImpl userDetails)  {
+    UserEntity user = new UserEntity(null,
+            userDetails.getUsername(),
+            userDetails.getEmail(),
+            userDetails.getPassword(),
+            null);
+
+    return userRepository.save(user);
+  }
+
 }

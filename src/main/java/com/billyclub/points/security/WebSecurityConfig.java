@@ -11,6 +11,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,9 +19,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+//@EnableWebSecurity
 @EnableGlobalMethodSecurity(
-		// securedEnabled = true,
-		// jsr250Enabled = true,
+//		// securedEnabled = true,
+//		// jsr250Enabled = true,
 		prePostEnabled = true)
 public class WebSecurityConfig {
 	@Autowired
@@ -56,16 +58,25 @@ public class WebSecurityConfig {
 
 	@Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+		http.formLogin()
+						.loginPage("login")
+								.failureUrl("login")
+										.and()
+												.logout()
+														.logoutSuccessUrl("index");
     http.cors().and().csrf().disable()
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-        .authorizeRequests().antMatchers("/api/auth/**","/console/**","/js/**","/css/**").permitAll()
+        .authorizeRequests().antMatchers("/view/index","/view/auth/**","/view/layout",
+					"/console/**","/js/**","/css/**","/assets/favicon.ico").permitAll()
         .antMatchers("/api/test/**").permitAll()
         .anyRequest().authenticated();
 
 	//enables h2 console frames for viewing
 	http.headers().frameOptions().disable();
     http.authenticationProvider(authenticationProvider());
+//	http.authenticationManager(authenticationManager)
 
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     

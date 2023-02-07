@@ -19,8 +19,8 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
 
-@Configuration
-@Profile("dev")
+//@Configuration
+//@Profile("dev")
 class LoadDatabase {
 
     private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);

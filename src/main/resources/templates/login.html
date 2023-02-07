@@ -35,13 +35,15 @@
   </style>
   <div class="main">
     <div class="col-md-6 col-sm-12">
-      <div th:if="${param.error}" class="alert alert-success">
-        Invalid username and password.
-      </div>
+<!--      <div th:if="${param.error}" class="alert alert-success">-->
+<!--        Invalid username and password.-->
+<!--      </div>-->
       <div th:if="${param.logout}" class="alert alert-success">
         You have been logged out.</div>
+      <div th:if="${param.signupsuccess}" class="alert alert-success">
+        Successfully registered to the Points game app! Now login.</div>
       <div class="login-form">
-        <form method="post" th:action="@{/login}">
+        <form method="post" th:action="@{/view/auth/signin/action}">
           <div class="form-group">
             <label>Username</label>
             <input
